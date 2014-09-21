@@ -12,11 +12,15 @@ User can click on "settings" which allows selection of advanced search options t
 User can configure advanced search filters such as:
 
 Size (small, medium, large, extra-large)  - Required
+
 Color filter (black, blue, brown, gray, green, etc...)  - Required
+
 Type (faces, photo, clip art, line art)  - Required
+
 Site (espn.com)  - Required
 
 Image type (png, jpg etc) - Optional.
+
 Language(en, jp, fr etc) - Optional
 
 Subsequent searches will have any filters applied to the search results  - Required
