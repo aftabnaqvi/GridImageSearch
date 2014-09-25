@@ -45,7 +45,6 @@ public class ImageResult {
 		
 		for(int i=0; i<array.length(); i++){
 			try{
-				Log.i("INFO:===========", array.toString());
 				results.add(new ImageResult(array.getJSONObject(i)));
 			}catch(JSONException e){
 				e.printStackTrace();

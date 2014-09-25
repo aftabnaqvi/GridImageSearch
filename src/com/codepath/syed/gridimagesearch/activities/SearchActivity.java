@@ -274,6 +274,8 @@ public class SearchActivity extends FragmentActivity implements OnDataChangeEven
     			
     			//Log.i("Info: ", response.toString());
     			try {
+    				if(response==null)
+    					return;
 					JSONArray imageResultJson = response.getJSONObject("responseData").getJSONArray("results");
 					// when you make changes to the adapter. it does modifies the underlying data.
 					aImageResults.addAll(ImageResult.fromJSONArray(imageResultJson)); // we can directly add the data in the adapter.

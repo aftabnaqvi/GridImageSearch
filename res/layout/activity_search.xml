@@ -39,7 +39,7 @@
         android:layout_below="@+id/etQuery"
         android:stretchMode="columnWidth"
         app:item_margin="10dp"
-        app:column_count="2"
+        app:column_count="3"
         app:column_count_landscape="3"/>
 
 </RelativeLayout>

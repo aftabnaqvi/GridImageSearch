@@ -153,7 +153,7 @@ public class AdvanceOptionsDialog extends DialogFragment implements OnClickListe
 		list.add("red");
 		list.add("teal");
 		list.add("white");
-		list.add("yello");
+		list.add("yellow");
 	
 		ArrayAdapter<String> dataAdapter = new ArrayAdapter<String>(this.getActivity(),
 				R.layout.spinner_item, list);
