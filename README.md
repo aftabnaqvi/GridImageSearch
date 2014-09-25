@@ -45,4 +45,7 @@ Bonus: Use the StaggeredGridView to display improve the grid of image results - 
 Bonus: User can zoom or pan images displayed in full-screen detail view - Implemented
 
 Demo link:
-https://github.com/aftabnaqvi/GridImageSearch/blob/master/GridImageSearch.gif 
+https://github.com/aftabnaqvi/GridImageSearch/blob/master/GridImageSearch.gif
+
+updated demo link:
+https://github.com/aftabnaqvi/GridImageSearch/blob/master/GridImageSearch_1.gif
