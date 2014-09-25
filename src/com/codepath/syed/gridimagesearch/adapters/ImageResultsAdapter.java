@@ -3,6 +3,8 @@ package com.codepath.syed.gridimagesearch.adapters;
 import java.util.List;
 
 import android.content.Context;
+import android.content.SharedPreferences;
+import android.preference.PreferenceManager;
 import android.text.Html;
 import android.util.AttributeSet;
 import android.util.DisplayMetrics;
@@ -31,21 +33,6 @@ public class ImageResultsAdapter extends ArrayAdapter<ImageResult> {
 	public ImageResultsAdapter(Context context, List<ImageResult> images) {
 		super(context, android.R.layout.simple_list_item_1, images);
 		// TODO Auto-generated constructor stub
-		DisplayMetrics metrics = getDisplayMetrics();
-		width = metrics.widthPixels;
-		height = metrics.heightPixels;
-		
-//		if(photo.imageHeight > metrics.heightPixels/2){
-//			photoHeight = metrics.heightPixels/2; 
-//		} else {
-//			photoHeight = photo.imageHeight;
-//		}
-//		
-//		// We need to adjust the height if the width of the bitmap is
-//		// smaller than the view width, otherwise the image will be boxed.
-//		final double viewWidthToBitmapWidthRatio = (double)photo.imageWidth / (double)photo.imageHeight;
-//		imagePhoto.getLayoutParams().height = photoHeight*(int)viewWidthToBitmapWidthRatio;
-	
 	}
 
 	@Override
@@ -73,8 +60,12 @@ public class ImageResultsAdapter extends ArrayAdapter<ImageResult> {
 			//Picasso.with(getContext()).load(result.thumbUrl).resize(width/3, width/3).centerCrop().into(vh.ivImage);
 			//Picasso.with(getContext()).load(result.thumbUrl).resize(width/3, width/3).centerInside().into(vh.ivImage);
 			//Picasso.with(getContext()).load(result.thumbUrl).resize(width/4, width/5).centerInside().into(vh.ivImage); // good ratio
-			
-			Picasso.with(getContext()).load(result.thumbUrl).into(vh.ivImage); // maintains aspect ratio.
+			SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(getContext());
+			if( "huge".compareToIgnoreCase(preferences.getString("size", "")) == 0){
+				Picasso.with(getContext()).load(result.thumbUrl).resize(getDisplayMetrics().widthPixels, getDisplayMetrics().heightPixels).into(vh.ivImage);
+			} else {
+				Picasso.with(getContext()).load(result.thumbUrl).into(vh.ivImage); // maintains aspect ratio.
+			}
 		}
 		
 		// setting title of the picture

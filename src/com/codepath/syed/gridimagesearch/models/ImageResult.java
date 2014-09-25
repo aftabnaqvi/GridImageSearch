@@ -6,11 +6,16 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import android.util.Log;
+
 // our model.
 public class ImageResult {
 	public String fullUrl;
 	public String thumbUrl;
 	public String title;
+	public int height;
+	public int width;
+	
 	//public static Cursor cursor; // should have only once instance of this clss
 	
 	public static class Cursor{ // all static members.
@@ -25,6 +30,8 @@ public class ImageResult {
 			this.fullUrl = json.getString("url");
 			this.thumbUrl = json.getString("tbUrl");
 			this.title = json.getString("title");
+			this.width = json.getInt("width");
+			this.height = json.getInt("height");
 		}catch(JSONException e){
 			e.printStackTrace();
 		}
@@ -38,6 +45,7 @@ public class ImageResult {
 		
 		for(int i=0; i<array.length(); i++){
 			try{
+				Log.i("INFO:===========", array.toString());
 				results.add(new ImageResult(array.getJSONObject(i)));
 			}catch(JSONException e){
 				e.printStackTrace();

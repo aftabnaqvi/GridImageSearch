@@ -4,34 +4,88 @@
     android:layout_height="match_parent"
     android:padding="15dp" >
 
+    <TextView
+        android:id="@+id/tvAdvanceSearchOptions"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignLeft="@+id/tvImageType"
+        android:layout_alignParentTop="true"
+        android:layout_alignRight="@+id/spinnerSize"
+        android:gravity="center"
+        android:text="@string/advance_search_options_label"
+        android:textSize="13sp" />
+
+    <TextView
+        android:id="@+id/tvDomain"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignBottom="@+id/etDomian"
+        android:layout_toLeftOf="@+id/spinnerImageType"
+        android:text="@string/site_label" />
+
+    <Spinner
+        android:id="@+id/spinnerSize"
+        style="@style/AppTheme"
+        android:layout_width="200dp"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/tvAdvanceSearchOptions"
+        android:layout_toRightOf="@+id/tvSize"
+        android:layout_gravity="right"
+        android:gravity="right" />
+
+    <TextView
+        android:id="@+id/tvSize"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignBottom="@+id/spinnerSize"
+        android:layout_alignLeft="@+id/tvLanguage"
+        android:text="@string/size_label" />
+
     <Spinner
         android:id="@+id/spinnerColor"
         android:layout_width="200dp"
         android:layout_height="wrap_content"
-        android:layout_alignLeft="@+id/spinnerFaceType"
-        android:layout_below="@+id/spinnerSize" 
-        android:spinnerMode="dialog"/>
+        android:layout_alignLeft="@+id/spinnerSize"
+        android:layout_below="@+id/spinnerSize"
+        android:spinnerMode="dropdown" />
+
+    <TextView
+        android:id="@+id/tvColor"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignBottom="@+id/spinnerColor"
+        android:layout_alignLeft="@+id/tvType"
+        android:text="@string/color_label" />
 
     <Spinner
         android:id="@+id/spinnerFaceType"
         android:layout_width="200dp"
         android:layout_height="wrap_content"
-        android:layout_alignLeft="@+id/spinnerImageType"
+        android:layout_alignLeft="@+id/spinnerColor"
         android:layout_below="@+id/spinnerColor" />
+
+    <TextView
+        android:id="@+id/tvType"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignBottom="@+id/spinnerFaceType"
+        android:layout_alignParentLeft="true"
+        android:layout_marginLeft="15dp"
+        android:text="@string/face_type_label" />
 
     <Spinner
         android:id="@+id/spinnerImageType"
         android:layout_width="200dp"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/spinnerFaceType"
-        android:layout_toRightOf="@+id/tvImageType" />
+        android:layout_alignLeft="@+id/spinnerFaceType"
+        android:layout_below="@+id/spinnerFaceType" />
 
     <TextView
         android:id="@+id/tvImageType"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignTop="@+id/spinnerImageType"
-        android:layout_marginTop="20dp"
+        android:layout_alignBottom="@+id/spinnerImageType"
+        android:layout_alignRight="@+id/tvType"
         android:text="@string/image_type_label" />
 
     <Spinner
@@ -41,12 +95,13 @@
         android:layout_alignLeft="@+id/spinnerImageType"
         android:layout_below="@+id/spinnerImageType" />
 
-    <Spinner
-        android:id="@+id/spinnerSize"
-        android:layout_width="200dp"
+    <TextView
+        android:id="@+id/tvLanguage"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignLeft="@+id/spinnerColor"
-        android:layout_alignParentTop="true" />
+        android:layout_alignBottom="@+id/spinnerLanguage"
+        android:layout_alignRight="@+id/tvColor"
+        android:text="@string/language_label" />
 
     <EditText
         android:id="@+id/etDomian"
@@ -56,47 +111,5 @@
         android:layout_below="@+id/spinnerLanguage"
         android:ems="10"
         android:hint="@string/domain_hint" />
-
-    <TextView
-        android:id="@+id/tvLanguage"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignRight="@+id/tvImageType"
-        android:layout_alignTop="@+id/spinnerLanguage"
-        android:layout_marginTop="20dp"
-        android:text="@string/language_label" />
-
-    <TextView
-        android:id="@+id/tvColor"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_above="@+id/spinnerFaceType"
-        android:layout_alignLeft="@+id/tvType"
-        android:text="@string/color_label" />
-
-    <TextView
-        android:id="@+id/tvSize"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_above="@+id/spinnerColor"
-        android:layout_alignLeft="@+id/tvColor"
-        android:text="@string/size_label" />
-
-    <TextView
-        android:id="@+id/tvType"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignTop="@+id/spinnerFaceType"
-        android:layout_marginTop="19dp"
-        android:layout_toLeftOf="@+id/spinnerFaceType"
-        android:text="@string/face_type_label" />
-
-    <TextView
-        android:id="@+id/tvDomain"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignBottom="@+id/etDomian"
-        android:layout_toLeftOf="@+id/etDomian"
-        android:text="@string/site_label" />
 
 </RelativeLayout>

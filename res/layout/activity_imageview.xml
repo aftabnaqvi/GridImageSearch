@@ -3,16 +3,12 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent" >
 
-    <ImageView
+    <com.codepath.syed.gridimagesearch.activities.TouchImageView
         android:id="@+id/ivFullImage"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_above="@+id/tvImageTitle"
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentRight="true"
-        android:layout_alignParentTop="true"
         android:adjustViewBounds="true"
-        android:scaleType="centerCrop"
+        android:scaleType="centerCrop" 
         android:src="@drawable/ic_launcher" />
 
     <TextView

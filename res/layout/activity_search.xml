@@ -3,7 +3,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context="${relativePackage}.${activityClass}" >
-
+<!-- 
     <EditText
         android:id="@+id/etQuery"
         android:layout_width="wrap_content"
@@ -26,9 +26,10 @@
         android:layout_alignParentRight="true"
         android:layout_alignParentTop="true"
         android:text="@string/search_label" 
-        android:onClick="OnImageSearch"/>
+        android:onClick="OnImageSearch"/>  -->
 
-    <GridView
+    <com.etsy.android.grid.StaggeredGridView
+        xmlns:app="http://schemas.android.com/apk/res-auto"
         android:id="@+id/gvResults"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
@@ -36,11 +37,9 @@
         android:layout_alignParentLeft="true"
         android:layout_alignParentRight="true"
         android:layout_below="@+id/etQuery"
-        android:numColumns="4" 
         android:stretchMode="columnWidth"
-        android:verticalSpacing="1dp"
-        android:horizontalSpacing="1dp">
-
-    </GridView>
+        app:item_margin="10dp"
+        app:column_count="2"
+        app:column_count_landscape="3"/>
 
 </RelativeLayout>

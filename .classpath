@@ -3,7 +3,6 @@
 	<classpathentry kind="con" path="com.android.ide.eclipse.adt.ANDROID_FRAMEWORK"/>
 	<classpathentry exported="true" kind="con" path="com.android.ide.eclipse.adt.LIBRARIES"/>
 	<classpathentry exported="true" kind="con" path="com.android.ide.eclipse.adt.DEPENDENCIES"/>
-	<classpathentry kind="lib" path="/Users/snaqvi/Downloads/JakeWharton-ActionBarSherlock-5a15d92/actionbarsherlock"/>
 	<classpathentry kind="lib" path="/Users/snaqvi/Downloads/JakeWharton-ActionBarSherlock-5a15d92/actionbarsherlock/bin/actionbarsherlock.jar"/>
 	<classpathentry kind="src" path="src"/>
 	<classpathentry kind="src" path="gen"/>

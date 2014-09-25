@@ -7,5 +7,4 @@
         android:showAsAction="always"
         android:icon="@drawable/ic_action_save"
         android:title="Refresh"/>
-	
 </menu>

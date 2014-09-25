@@ -4,12 +4,13 @@ import java.util.ArrayList;
 import java.util.List;
 
 import android.app.Activity;
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
-import android.support.v4.app.NavUtils;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -19,6 +20,7 @@ import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Spinner;
+import android.widget.TextView;
 
 public class SettingsActivity extends Activity implements OnItemSelectedListener{
 	private Spinner spinnerSize;
@@ -27,24 +29,23 @@ public class SettingsActivity extends Activity implements OnItemSelectedListener
 	private Spinner spinnerImageType;
 	private Spinner spinnerLanguage;
 	private EditText etDomain;
-	
-	private Button btnSave;
-	 
+
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_settings);
  
-		getActionBar().setBackgroundDrawable(new ColorDrawable(Color.GRAY));
+		getActionBar().setBackgroundDrawable(new ColorDrawable(Color.GREEN));
 		
 		addItemsInSpinnerSize();
 		addItemsInSpinnerColor();
 		addItemsInSpinnerFaceType();
 		addItemsInSpinnerLanguage();
 		addItemsInSpinnerImageType();
+		
 		etDomain = (EditText)findViewById(R.id.etDomian);
 		
-		SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(this);//getPreferences(MODE_PRIVATE);
+		SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(this);
 		String storedDomain = preferences.getString("domain", "");
 		etDomain.setText(storedDomain);
 		
@@ -65,8 +66,8 @@ public class SettingsActivity extends Activity implements OnItemSelectedListener
 		ArrayAdapter<String> dataAdapter = new ArrayAdapter<String>(this,
 			android.R.layout.simple_spinner_item, list);
 		dataAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-		spinnerSize.setAdapter(dataAdapter);
 		
+		spinnerSize.setAdapter(dataAdapter);
 		spinnerSize.setSelection(list.indexOf(PreferenceManager.getDefaultSharedPreferences(this).getString("size", "")));
 	}
 	
@@ -85,7 +86,7 @@ public class SettingsActivity extends Activity implements OnItemSelectedListener
 		list.add("red");
 		list.add("teal");
 		list.add("white");
-		list.add("yello");
+		list.add("yellow");
 	
 		ArrayAdapter<String> dataAdapter = new ArrayAdapter<String>(this,
 			android.R.layout.simple_spinner_item, list);
@@ -163,7 +164,6 @@ public class SettingsActivity extends Activity implements OnItemSelectedListener
 				break;
 			case android.R.id.home:
 	            // app icon in action bar clicked; goto parent activity.
-				onSettingsSave();
 	            this.finish();
 	           // NavUtils.navigateUpFromSameTask(this); // it recreates the parent activity. 
 	            return true;
@@ -189,13 +189,36 @@ public class SettingsActivity extends Activity implements OnItemSelectedListener
 	@Override
 	public void onItemSelected(AdapterView<?> parent, View view, int position,
 			long id) {
-		//spinnerSize = (Spinner) parent.getItemAtPosition(position)
-		
 	}
 
 	@Override
 	public void onNothingSelected(AdapterView<?> parent) {
 		// TODO Auto-generated method stub
+	}
+
+	/* (non-Javadoc)
+	 * @see android.app.Activity#finish()
+	 */
+	@Override
+	public void finish() {
+		SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(this); 
+		boolean bChanged = preferences.getString("imageType", "").compareTo((String) spinnerImageType.getSelectedItem()) != 0 ||
+				preferences.getString("language", "").compareTo((String) spinnerLanguage.getSelectedItem())  != 0 || 
+				preferences.getString("faceType", "").compareTo((String) spinnerFaceType.getSelectedItem())  != 0 || 
+				preferences.getString("color", "").compareTo((String) spinnerColor.getSelectedItem())  != 0 || 
+				preferences.getString("size", "").compareTo((String) spinnerSize.getSelectedItem())  != 0 || 
+				preferences.getString("domain", "").compareTo(etDomain.getText().toString()) != 0;
 		
+		
+		Intent intent = new Intent(this, SearchActivity.class);
+		intent.putExtra("changed", bChanged); // just returning the flag.
+
+		if(bChanged)
+			onSettingsSave();
+		
+		Log.i("INFO: ", "value of bChanged : " + bChanged); 
+		// Activity finished, return the intent
+		setResult(RESULT_OK, intent);
+		super.finish();
 	}
 }

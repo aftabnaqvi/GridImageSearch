@@ -2,8 +2,13 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android" >
      <item
         android:id="@+id/action_close"
-        android:showAsAction="always"
+        android:showAsAction="ifRoom|collapseActionView"
         android:icon="@drawable/ic_action_close"
         android:title="@string/close_label"/>
-
+     
+     <item
+        android:id="@+id/action_share"
+        android:showAsAction="ifRoom|collapseActionView"
+        android:icon="@drawable/ic_action_share"
+        android:title="@string/share_label"/>
 </menu>

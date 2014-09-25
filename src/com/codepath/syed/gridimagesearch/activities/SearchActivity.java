@@ -7,7 +7,7 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import android.app.Activity;
+import android.app.SearchManager;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -17,39 +17,37 @@ import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
+import android.support.v4.app.FragmentActivity;
+import android.support.v4.app.FragmentManager;
 import android.util.Log;
 import android.view.Menu;
-import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.EditText;
-import android.widget.GridView;
+import android.widget.SearchView;
+import android.widget.Toast;
 
 import com.codepath.syed.gridimagesearch.adapters.EndlessScrollListener;
 import com.codepath.syed.gridimagesearch.adapters.ImageResultsAdapter;
 import com.codepath.syed.gridimagesearch.models.ImageResult;
 import com.codepath.syed.gridimagesearch.models.ImageViewData;
 import com.codepath.syed.gridimagesearch.models.Settings;
+import com.etsy.android.grid.StaggeredGridView;
 import com.loopj.android.http.AsyncHttpClient;
 import com.loopj.android.http.JsonHttpResponseHandler;
 
-public class SearchActivity extends Activity {
+public class SearchActivity extends FragmentActivity implements OnDataChangeEventListener{
 
 	private EditText etQuery;
-	private GridView gvResults;
+	private StaggeredGridView gvResults;
 	private ArrayList<ImageResult> imageResults;
 	private ImageResultsAdapter aImageResults;
 	private String userQueryText;
 	private String baseQuery = "https://ajax.googleapis.com/ajax/services/search/images?v=1.0&rsz=8&as_filetype=%s&imgtype=%s&imgsz=%s&h1=%s&imgcolor=%s&as_sitesearch=%s&q=";
 	private String searchQuery;
-//	private static final String FILE_TYPE = "as_filetype"; 
-//	private static final String IMAGE_TYPE = "imgtype";
-//	private static final String IMAGE_SIZE = "imgsz";
-//	private static final String LANGUAGE = "h1";
-//	private static final String IMAGE_COLOR = "imgcolor";
-//	private static final String SITE_SEARCH = "as_sitesearch";
+	private int REQUEST_CODE = 200;
 	
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -65,6 +63,9 @@ public class SearchActivity extends Activity {
         
         // link the adapter
         gvResults.setAdapter(aImageResults);
+        
+        // read setting from shared place.
+        readUpdatedSettings();
         
         // Attach the listener to AdapterView onCreate
         gvResults.setOnScrollListener(new EndlessScrollListener(){
@@ -91,14 +92,35 @@ public class SearchActivity extends Activity {
                 startActivity(intent);
             }
         });
+        
+     // Get the intent, verify the action and get the query
+        Intent intent = getIntent();
+        if (Intent.ACTION_SEARCH.equals(intent.getAction())) {
+        	String query = intent.getStringExtra(SearchManager.QUERY);
+          	//buildQueryWithOptions();
+          	//("INFO: OnCreate: ", searchQuery+query+"&start=1");
+  			//fetchMoreResults(searchQuery+query+"&start=1");
+          	searchImages(query);
+        }
+        
+    }
+    
+    private void showAdvanceOptionsDialog() {
+        FragmentManager fm = getSupportFragmentManager();
+        AdvanceOptionsDialog optionsDialog = AdvanceOptionsDialog.newInstance("Advance Filter Options");
+        optionsDialog.show(fm, "advance_filter_options");
+
+        if(optionsDialog.isChanged() == true){
+        	readUpdatedSettings();
+        }
     }
     
     // Network handling helpers
     private boolean isDeviceConnected(){
-    	if(isNetworkAvailable() == Boolean.FALSE || (isOnline() == Boolean.FALSE)){
+    	if(isNetworkAvailable() == Boolean.FALSE){
         	getActionBar().setBackgroundDrawable(new ColorDrawable(Color.RED));
-
 			getActionBar().setTitle(R.string.network_error);
+			Toast.makeText(getApplicationContext(), "Network Error.", Toast.LENGTH_SHORT).show();
         	return false; 
         }
     	
@@ -112,18 +134,18 @@ public class SearchActivity extends Activity {
         return activeNetworkInfo != null && activeNetworkInfo.isConnectedOrConnecting();
     }
     
-    private Boolean isOnline() {
-        try {
-            Process p1 = java.lang.Runtime.getRuntime().exec("ping -c 1 www.google.com");
-            int returnVal = p1.waitFor();
-            boolean reachable = (returnVal==0);
-            return reachable;
-        } catch (Exception e) {
-            // TODO Auto-generated catch block
-            e.printStackTrace();
-        }
-        return false;
-    }
+//    private Boolean isOnline() { // casues hang.
+//        try {
+//            Process p1 = java.lang.Runtime.getRuntime().exec("ping -c 1 www.google.com");
+//            int returnVal = p1.waitFor();
+//            boolean reachable = (returnVal==0);
+//            return reachable;
+//        } catch (Exception e) {
+//            // TODO Auto-generated catch block
+//            e.printStackTrace();
+//        }
+//        return false;
+//    }
     
     private void setActionBar(){
     	getActionBar().setBackgroundDrawable(new ColorDrawable(Color.BLACK));
@@ -136,34 +158,66 @@ public class SearchActivity extends Activity {
       // Use the offset value and add it as a parameter to your API request to retrieve paginated data.
       // Deserialize API response and then construct new objects to append to the adapter
     	
-    	String query = searchQuery;
-    	fetchMoreResults(query+userQueryText+"&start=" + offset*8);
+    	String query = searchQuery + userQueryText + "&start=" + offset*8;
+    	fetchMoreResults(query);
     }
     
     private void setupViews(){
-    	etQuery = (EditText) findViewById(R.id.etQuery);
-    	etQuery.setText("cat");
-    	gvResults = (GridView) findViewById(R.id.gvResults);
+    	gvResults = (StaggeredGridView) findViewById(R.id.gvResults);
     }
     
     // called when button will be pressed
-    public void OnImageSearch(View v){
-    	readUpdatedSettings();
+    public void searchImages(String queryString){
+    	//showEditDialog();
     	imageResults.clear(); // clear it... in case of new search
     	aImageResults.clear(); // clearing out the adapter in cae of new search.
-    	userQueryText = etQuery.getText().toString().trim();
-    	if(!userQueryText.isEmpty()){
+    	userQueryText = queryString;//etQuery.getText().toString().trim();
+    	//if(!userQueryText.isEmpty()){
     		buildQueryWithOptions();
     		fetchMoreResults(searchQuery+userQueryText+"&start=1");
-    	}
+    		
+    		Log.i("INFO: ", searchQuery+userQueryText+"&start=1");
+    	//}
     }
     
     //---------------------- action selection handlers
     @Override
 	public boolean onCreateOptionsMenu(Menu menu) {
-    	MenuInflater inflater = getMenuInflater();
-        inflater.inflate(R.menu.search_activity_menu, menu);
+    	getMenuInflater().inflate(R.menu.search_activity_menu, menu);
+        MenuItem searchItem = menu.findItem(R.id.action_search);
+        SearchView searchView = (SearchView) searchItem.getActionView();
+        searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
+            @Override
+            public boolean onQueryTextSubmit(String query) {
+            	Log.i("INFO: query....", query);
+            	// check network availability 
+        		if(!isDeviceConnected())
+        			return false;
+
+        		setActionBar(); // sets actionbar to normal. Currently, we don't have any way to come back to normal.
+                searchImages(query);
+                return true;
+            }
+
+            @Override
+            public boolean onQueryTextChange(String newText) {
+                return false;
+            }
+        });
         return true;
+    }
+    
+
+	/* (non-Javadoc)
+	 * @see android.support.v4.app.FragmentActivity#onActivityResult(int, int, android.content.Intent)
+	 */
+	@Override
+	protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+		Log.i("INFO:", "data update received");
+		if (resultCode == RESULT_OK && requestCode == REQUEST_CODE) {
+    			readUpdatedSettings(); 
+    			Log.i("INFO:", "data update received");
+    	}
 	}
 
 	@Override
@@ -172,13 +226,15 @@ public class SearchActivity extends Activity {
 	    // action with ID action_refresh was selected
 	    case R.id.action_refresh:
 	    	imageResults.clear(); // clear it... in case of new search
-	    	aImageResults.clear(); // clearing out the adapter in cae of new search.
+	    	aImageResults.clear(); // clearing out the adapter in cae of new search
+	    	buildQueryWithOptions();
 	    	fetchMoreResults(searchQuery+userQueryText+"&start=1");
 	      break;
 	    // action with ID action_settings was selected
 	    case R.id.action_settings:
-	    	Intent i = new Intent(this, SettingsActivity.class);
-	    	startActivityForResult(i, 200); 
+	    	//Intent i = new Intent(this, SettingsActivity.class);
+	    	//startActivityForResult(i, REQUEST_CODE); 
+	    	showAdvanceOptionsDialog();
 	      break;
 	    default:
 	      break;
@@ -195,8 +251,8 @@ public class SearchActivity extends Activity {
 
 	public void fetchMoreResults(String query){
     	// check network availability 
-		//if(!isDeviceConnected())
-		//	return;
+		if(!isDeviceConnected())
+			return;
 		
 		setActionBar();
 		
@@ -219,18 +275,17 @@ public class SearchActivity extends Activity {
     			//Log.i("Info: ", response.toString());
     			try {
 					JSONArray imageResultJson = response.getJSONObject("responseData").getJSONArray("results");
-					// when you make changes to the adapter. it does modifies the underlaying data.
+					// when you make changes to the adapter. it does modifies the underlying data.
 					aImageResults.addAll(ImageResult.fromJSONArray(imageResultJson)); // we can directly add the data in the adapter.
-					
 					//ImageResult.parseCursor(response.getJSONObject("responseData").getJSONObject("cursor"));
 					// aImageResults.notifyDataSetChanged(); - convensional way
-					
+    				
 				} catch (JSONException e) {
 					// TODO Auto-generated catch block
 					e.printStackTrace();
 				}
     			
-    			Log.i("Info: ", imageResults.toString());
+    			//Log.i("Info: ", imageResults.toString());
     		}
     	});
     }
@@ -251,10 +306,17 @@ public class SearchActivity extends Activity {
 			Settings.size = preferences.getString("size", "");
 			
 			String s = preferences.getString("ImageType", "");
-			Log.i("INFO: ", preferences.getString("domain", ""));
-			Log.i("INFO: ", preferences.getString("ImageType", ""));
+			//("INFO: ", preferences.getString("domain", ""));
+			//Log.i("INFO: ", preferences.getString("ImageType", ""));
 		} else {
 			Log.e("ERORR:", "preferences object is NULL");
 		}
 	}
+
+	@Override
+	public void dataChangeEvent(String s) {
+		Log.i("INFO:", "data update received................");
+		readUpdatedSettings(); 
+	}
 }
+

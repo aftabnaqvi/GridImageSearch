@@ -1,0 +1,117 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:padding="5dp" >
+
+    <Spinner
+        android:id="@+id/spinnerColor"
+        android:layout_width="200dp"
+        android:layout_height="wrap_content"
+        android:layout_alignLeft="@+id/spinnerSize"
+        android:layout_below="@+id/spinnerSize"
+        android:spinnerMode="dropdown" />
+
+    <Spinner
+        android:id="@+id/spinnerFaceType"
+        android:layout_width="200dp"
+        android:layout_height="wrap_content"
+        android:layout_alignLeft="@+id/spinnerColor"
+        android:layout_below="@+id/spinnerColor" />
+
+    <TextView
+        android:id="@+id/tvType"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignBottom="@+id/spinnerFaceType"
+        android:layout_alignParentLeft="true"
+        android:layout_marginLeft="15dp"
+        android:text="@string/face_type_label" />
+
+    <Spinner
+        android:id="@+id/spinnerImageType"
+        android:layout_width="200dp"
+        android:layout_height="wrap_content"
+        android:layout_alignLeft="@+id/spinnerFaceType"
+        android:layout_below="@+id/spinnerFaceType" />
+
+    <TextView
+        android:id="@+id/tvImageType"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignBottom="@+id/spinnerImageType"
+        android:layout_alignRight="@+id/tvType"
+        android:text="@string/image_type_label" />
+
+    <EditText
+        android:id="@+id/etDomian"
+        android:layout_width="200dp"
+        android:layout_height="wrap_content"
+        android:layout_alignLeft="@+id/spinnerImageType"
+        android:layout_below="@+id/spinnerImageType"
+        android:ems="10"
+        android:hint="@string/domain_hint"
+        android:textColor="#4DCFFF" 
+        android:textSize="12sp">
+    </EditText>
+
+    <TextView
+        android:id="@+id/tvDomain"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignBottom="@+id/etDomian"
+        android:layout_toLeftOf="@+id/etDomian"
+        android:text="@string/site_label" />
+
+    <Button
+        android:id="@+id/btnSave"
+        android:layout_width="75dp"
+        android:layout_height="45dp"
+        android:layout_alignRight="@+id/etDomian"
+        android:layout_below="@+id/etDomian"
+        android:layout_marginTop="17dp"
+        android:background="@drawable/button_shape"
+        android:text="Save"
+        android:textColor="#FFFFFF"
+        android:textSize="12sp" />
+
+    <Button
+        android:id="@+id/btnCancel"
+        style="?android:attr/buttonStyleSmall"
+        android:layout_width="75dp"
+        android:layout_height="45dp"
+        android:layout_alignBaseline="@+id/btnSave"
+        android:layout_alignBottom="@+id/btnSave"
+        android:layout_marginRight="17dp"
+        android:layout_toLeftOf="@+id/btnSave"
+        android:background="@drawable/button_shape"
+        android:text="Cancel"
+        android:textColor="#FFFFFF"
+        android:textSize="12sp" />
+
+    <Spinner
+        android:id="@+id/spinnerSize"
+        style="@style/AppTheme"
+        android:layout_width="200dp"
+        android:layout_height="wrap_content"
+        android:layout_alignParentTop="true"
+        android:layout_toRightOf="@+id/tvType"
+        android:gravity="right" />
+
+    <TextView
+        android:id="@+id/tvColor"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_above="@+id/spinnerFaceType"
+        android:layout_alignRight="@+id/tvType"
+        android:text="@string/color_label" />
+
+    <TextView
+        android:id="@+id/tvSize"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignBottom="@+id/spinnerSize"
+        android:layout_alignRight="@+id/tvColor"
+        android:text="@string/size_label" />
+
+</RelativeLayout>

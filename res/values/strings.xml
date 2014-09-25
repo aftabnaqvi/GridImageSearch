@@ -5,16 +5,18 @@
     <string name="settings_activity_title">Settings</string>
     <string name="search_query">"Enter search query "</string>
     <string name="search_label">Search</string>
-    <string name="size_label">Size:</string>
-    <string name="color_label">Color:</string>
-    <string name="face_type_label">Type:</string>
-    <string name="image_type_label">Image Type:</string>
+    <string name="size_label">Image Size:</string>
+    <string name="color_label">Image Color:</string>
+    <string name="face_type_label">Image Type:</string>
+    <string name="image_type_label">File Type:</string>
     <string name="language_label">Language:</string>
-    <string name="site_label">Site:</string>
+    <string name="site_label">Site Filter:</string>
     <string name="domain_hint">amazon.com</string>
     <string name="image_view_activity">Image View</string>
 	<string name="close_label">Close</string>
 	<string name="image_title_label">This is title text</string>
 	<string name="network_error">No Network</string>
-    
+	<string name="share_label">Share Image</string>
+	<string name="advance_search_options_label">Advance Search Options</string>
+	
 </resources>
