@@ -97,9 +97,6 @@ public class SearchActivity extends FragmentActivity implements OnDataChangeEven
         Intent intent = getIntent();
         if (Intent.ACTION_SEARCH.equals(intent.getAction())) {
         	String query = intent.getStringExtra(SearchManager.QUERY);
-          	//buildQueryWithOptions();
-          	//("INFO: OnCreate: ", searchQuery+query+"&start=1");
-  			//fetchMoreResults(searchQuery+query+"&start=1");
           	searchImages(query);
         }
         
@@ -276,6 +273,7 @@ public class SearchActivity extends FragmentActivity implements OnDataChangeEven
     			try {
     				if(response==null)
     					return;
+    				
 					JSONArray imageResultJson = response.getJSONObject("responseData").getJSONArray("results");
 					// when you make changes to the adapter. it does modifies the underlying data.
 					aImageResults.addAll(ImageResult.fromJSONArray(imageResultJson)); // we can directly add the data in the adapter.
@@ -286,8 +284,6 @@ public class SearchActivity extends FragmentActivity implements OnDataChangeEven
 					// TODO Auto-generated catch block
 					e.printStackTrace();
 				}
-    			
-    			//Log.i("Info: ", imageResults.toString());
     		}
     	});
     }
@@ -308,8 +304,6 @@ public class SearchActivity extends FragmentActivity implements OnDataChangeEven
 			Settings.size = preferences.getString("size", "");
 			
 			String s = preferences.getString("ImageType", "");
-			//("INFO: ", preferences.getString("domain", ""));
-			//Log.i("INFO: ", preferences.getString("ImageType", ""));
 		} else {
 			Log.e("ERORR:", "preferences object is NULL");
 		}
@@ -317,7 +311,6 @@ public class SearchActivity extends FragmentActivity implements OnDataChangeEven
 
 	@Override
 	public void dataChangeEvent(String s) {
-		Log.i("INFO:", "data update received................");
 		readUpdatedSettings(); 
 	}
 }
